@@ -4,7 +4,16 @@ function moduleProject3() {
 
   function buildNav(links) {
     //  ✨ do your magic here
-    return document.createElement('nav')
+    let navMenu = document.createElement('nav')
+    function buildNavItem(link){
+      let menuItem = document.createElement('a')
+      menuItem.textContent = link.textContent
+      menuItem.href = link.href
+      menuItem.title = link.title
+      navMenu.appendChild(menuItem)
+    }
+    links.forEach(buildNavItem)
+    return navMenu
   }
 
   // ❗ DOM creation using your `buildNav` component (do not change):
@@ -20,6 +29,40 @@ function moduleProject3() {
 
   function buildLearnerCard(learner, languages) {
     //  ✨ do your magic here
+    let learnerCard = document.createElement('div')
+    let favoriteLanguage = languages.find(({id}) => id === learner.favLanguage)
+    learnerCard.classList.add('learner-card')
+
+    let name = document.createElement('p')
+    name.textContent = learner.fullName
+    learnerCard.appendChild(name)
+
+    let learnerId = document.createElement('p')
+    learnerId.textContent = `Learner ID: ${learner.id}`
+    learnerCard.appendChild(learnerId)
+
+    let dateOfBirth = document.createElement('p')
+    dateOfBirth.textContent = `Date of Birth: ${learner.dateOfBirth}`
+    learnerCard.appendChild(dateOfBirth)
+
+    let favLanguage = document.createElement('p')
+    favLanguage.textContent = `Favorite Language: ${favoriteLanguage.name}`
+    learnerCard.appendChild(favLanguage)
+
+    learnerCard.addEventListener('click', evt => {
+      if (document.querySelector('div.learner-card.active')){
+        let currentActive = document.querySelector('div.learner-card.active')
+        currentActive.classList.remove('active')
+      }
+      if (evt.target.tagName === 'P'){
+        evt.target.parentElement.classList.add('active')
+      } else {
+        evt.target.classList.add('active')
+      }
+      
+    })
+
+    return learnerCard
   }
 
   {
@@ -40,13 +83,62 @@ function moduleProject3() {
       { id: 17, fullName: 'Daniel Castillo', dateOfBirth: '1995-11-05', favLanguage: 12 }
     ]
     //  ✨ do your magic here
+    for (let i = 0; i < learners.length; i++){
+      document.querySelector('section').appendChild(buildLearnerCard(learners[i], languages))
+    }
   }
 
   // 👉 TASK 3 - Write a `buildFooter` component that returns a footer
 
   function buildFooter(footerData) {
     //  ✨ do your magic here
-    return document.createElement('footer')
+    let footer = document.createElement('footer')
+    let companyInfo = document.createElement('div')
+    //----
+    companyInfo.classList.add('company-info')
+    
+    let companyName = document.createElement('p')
+    companyName.textContent = footerData.companyName
+    companyName.classList.add('company-name')
+    companyInfo.appendChild(companyName)
+
+    let address = document.createElement('p')
+    address.textContent = footerData.address
+    address.classList.add('address')
+    companyInfo.appendChild(address)
+
+    let contactEmail = document.createElement('p')
+    contactEmail.classList.add('contact-email')
+    contactEmail.innerHTML = `Email: <a href = mailto:${footerData.contactEmail}>${footerData.contactEmail}</a>`
+    companyInfo.appendChild(contactEmail)
+
+    footer.appendChild(companyInfo)
+    //----
+    let socialMedia = document.createElement('div')
+    
+    let twitter = document.createElement('a')
+    twitter.href = footerData.socialMedia.twitter
+    twitter.textContent = 'Twitter'
+    socialMedia.appendChild(twitter)
+
+    let facebook = document.createElement('a')
+    facebook.href = footerData.socialMedia.facebook
+    facebook.textContent = 'Facebook'
+    socialMedia.appendChild(facebook)
+
+    let instagram = document.createElement('a')
+    instagram.href = footerData.socialMedia.instagram
+    instagram.textContent = 'Instagram'
+    socialMedia.appendChild(instagram)
+
+    footer.appendChild(socialMedia)
+    //----
+    let copyright = "© " + footerData.companyName + " " + new Date().getFullYear()
+    let copyrightElement = document.createElement('div')
+    copyrightElement.textContent = copyright.toUpperCase()
+    footer.appendChild(copyrightElement)
+
+    return footer
   }
 
   // ❗ DOM creation using your `buildFooter` component (do not change):
